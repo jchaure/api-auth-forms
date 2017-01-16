@@ -2,15 +2,17 @@
 
 var ApiAuth = require('./../api-auth');
 
-var ApiAuthForm = function () {
+var ApiAuthForm = function (options) {
 
-  var apiAuth = new ApiAuth({
-    customerId: 'patata'
+  if (!options.customerId) {
+    throw new Error('You must provide a customer Id');
+  }
+
+  this.apiAuth = new ApiAuth({
+    customerId: options.customerId
   });
 
-  var config = apiAuth.config.get();
-
-  console.log('api-auth-form', config);
+  this.config = this.apiAuth.config.get();
 
 }
 

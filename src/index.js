@@ -1,5 +1,5 @@
-var $ = require('jquery');
-
 var ApiAuthForm = require('./api-auth-form');
 
-var apiAuthForm = new ApiAuthForm();
+var apiAuthForm = new ApiAuthForm({
+  customerId: 'patata'
+});
