@@ -13,7 +13,6 @@ var ApiAuth = function (options) {
 
   this.config = new ApiConfig(this.options);
   this.strategies = new ApiStrategies(this.options);
-
 }
 
 module.exports = ApiAuth;

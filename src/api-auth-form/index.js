@@ -23,44 +23,53 @@ var ApiAuthForm = function (options) {
         self.createProviderForm(strategy);
       })
   });
-
 }
 
 ApiAuthForm.prototype.createProviderForm = function (strategy) {
-  $(this.id).append('<h2>'+ strategy.provider +'</h2>');
+  var header = document.createElement('h2');
+  header.setAttribute('class', 'provider--header');
+  header.textContent = strategy.provider;
+
+  $(this.id).append(header);
 
   var form = document.createElement('form');
-
   form.setAttribute('id', 'api-auth-form-' + strategy.provider);
   form.setAttribute('method', 'POST');
 
-  this.createProviderFields(form, strategy);
-
-  var submit = document.createElement('input');
-  submit.setAttribute('type', 'submit');
-  submit.setAttribute('value', 'Save');
+  this.createFormFields(form, strategy);
 
   $(this.id).append(form);
-  $(form).append(submit);
-
 }
 
-ApiAuthForm.prototype.createProviderFields = function (form, strategy) {
+ApiAuthForm.prototype.createFormFields = function (form, strategy) {
 
   strategy.fields.forEach(function (field) {
-    switch (field.type) {
-      case 'String':
-        var textField = document.createElement('input');
+    var fieldHolder = document.createElement('div');
+    fieldHolder.setAttribute('class', 'form-group');
 
-        textField.setAttribute('type', 'text');
-        textField.setAttribute('name', field.name);
-        textField.setAttribute('value', field.value);
+    $(form).append(fieldHolder);
 
-        $(form).append(textField);
-      break;
-    }
+    // @TODO: Create input by type
+    // For now we assume all fields are strings (input type text)
+    var textField = document.createElement('input');
+    textField.setAttribute('type', 'text');
+    textField.setAttribute('name', field.name);
+    textField.setAttribute('placeholder', field.name);
+    textField.setAttribute('value', field.value);
+
+    var label = document.createElement('label');
+    label.textContent = field.name;
+
+    $(fieldHolder).append(label);
+    $(fieldHolder).append(textField);
   });
 
+  var submit = document.createElement('button');
+  var text = document.createTextNode('Save');
+  submit.setAttribute('class', 'btn');
+  submit.appendChild(text);
+
+  $(form).append(submit);
 }
 
 module.exports = ApiAuthForm;
