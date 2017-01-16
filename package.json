@@ -1,0 +1,23 @@
+{
+  "name": "api-auth-forms",
+  "version": "0.0.1",
+  "description": "Widget for api-auth config",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jchaure/api-auth-forms.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jchaure/api-auth-forms/issues"
+  },
+  "homepage": "https://github.com/jchaure/api-auth-forms#readme",
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "webpack": "^1.14.0"
+  }
+}
