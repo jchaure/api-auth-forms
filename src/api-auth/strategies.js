@@ -3,14 +3,17 @@
 var $ = require('jquery');
 
 var ApiAuthStrategies = function (options) {
+  if (!options.baseUrl) {
+    throw new Error('You must provide a service endpoint');
+  }
   if (!options.customerId) {
-    throw new Error('You must provide a customer Id to load strategies');
+    throw new Error('You must provide a customer id to load strategies');
   }
   this.options = options;
 };
 
 ApiAuthStrategies.prototype.get = function () {
-  return $.get(this.options.baseURL + '/strategies', {yip_id: this.options.customerId});
+  return $.get(this.options.baseUrl + '/strategies', {customer: this.options.customerId});
 }
 
 module.exports = ApiAuthStrategies;
