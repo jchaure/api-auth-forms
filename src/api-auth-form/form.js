@@ -3,19 +3,7 @@
 var $ = require('jquery');
 
 var FormDecorator = require('./form-decorator');
-var FieldsDecorator = require('./fields-decorator');
-
-function getInputType (field) {
-  return 'text';
-}
-
-function getInputValue (field) {
-  return field.value;
-}
-
-function getInputName (field) {
-  return field.name;
-}
+var Field = require('./field');
 
 function ApiAuthForm (options, api) {
   if (!options.$el || !options.$el.length) {
@@ -27,7 +15,6 @@ function ApiAuthForm (options, api) {
   this.api = api;
   this.options = options;
   this.formDecorator = new FormDecorator(options);
-  this.fieldsDecorator = new FieldsDecorator(options);
   this.init();
 }
 
@@ -47,20 +34,15 @@ ApiAuthForm.prototype.createForm = function () {
 }
 
 ApiAuthForm.prototype.createFields = function () {
-  var fields = this.options.strategy.fields;
+  var fieldsData = this.options.strategy.fields;
   var $fields = [];
   var $button = $('<button>')
     .attr('type', 'submit')
-    .attr('data-js', 'submit-sso')
+    .attr('data-js', 'sso-submit')
     .text('Submit');
-  for (var i = 0, l = fields.length; i < l; i++) {
-    var field = fields[i];
-    var $field = $('<input>')
-      .attr('type', getInputType(field))
-      .attr('name', getInputName(field))
-      .attr('data-js', 'input-sso')
-      .val(getInputValue(field));
-    $fields.push($field);
+  for (var i = 0, l = fieldsData.length; i < l; i++) {
+    var field = new Field(this.options, fieldsData[i]);
+    $fields.push(field.getDOM());
   }
   $fields.push($button);
   return $fields;
@@ -74,7 +56,7 @@ ApiAuthForm.prototype.serializeForm = function () {
     provider: this.options.strategy.provider,
     config: {}
   };
-  this.$form.find('[data-js="input-sso"]').each(function () {
+  this.$form.find('[data-js="sso-input"]').each(function () {
     var $this = $(this);
     strategy.config[$this.attr('name')] = $this.val();
   });
@@ -84,7 +66,7 @@ ApiAuthForm.prototype.serializeForm = function () {
 
 ApiAuthForm.prototype.generateBindings = function () {
   var self = this;
-  self.$form.find('[data-js="submit-sso"]').on('click', function (e) {
+  self.$form.find('[data-js="sso-submit"]').on('click', function (e) {
     e.preventDefault();
     var method = self.options.strategy.active ? 'put' : 'post';
     self.api.config[method](self.serializeForm()).then(function () {

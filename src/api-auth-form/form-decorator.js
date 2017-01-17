@@ -15,11 +15,7 @@ function FormDecorator (options) {
 }
 
 FormDecorator.prototype.getFormTag = function () {
-  var tag = this.options.form.formTag;
-  if (ALLOWED_TAGS.indexOf(tag) === -1) {
-    tag = DEFAULT_FORM_TAG;
-  }
-  return tag;
+  return decoratorHelper.getTag(DEFAULT_FORM_TAG, this.options.form.formTag, ALLOWED_TAGS);
 };
 
 FormDecorator.prototype.getFormClass = function () {
