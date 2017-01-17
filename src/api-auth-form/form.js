@@ -2,6 +2,9 @@
 
 var $ = require('jquery');
 
+var FormDecorator = require('./form-decorator');
+var FieldsDecorator = require('./fields-decorator');
+
 function getInputType (field) {
   return 'text';
 }
@@ -23,6 +26,8 @@ function ApiAuthForm (options, api) {
   }
   this.api = api;
   this.options = options;
+  this.formDecorator = new FormDecorator(options);
+  this.fieldsDecorator = new FieldsDecorator(options);
   this.init();
 }
 
@@ -36,13 +41,14 @@ ApiAuthForm.prototype.init = function () {
 };
 
 ApiAuthForm.prototype.createForm = function () {
-  var $container = $('<div>');
+  var $container = $('<' + this.formDecorator.getFormTag() + '>');
+  $container.addClass(this.formDecorator.getFormClass());
   return $container;
 }
 
 ApiAuthForm.prototype.createFields = function () {
   var fields = this.options.strategy.fields;
-  var $fields = []
+  var $fields = [];
   var $button = $('<button>')
     .attr('type', 'submit')
     .attr('data-js', 'submit-sso')

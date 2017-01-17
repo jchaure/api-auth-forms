@@ -11,7 +11,9 @@ function ApiAuthView (options) {
     for (var i = 0, l = strategies.length; i < l; i++) {
       self.forms.push(new ApiAuthForm({
         $el: options.$el,
-        strategy: strategies[i]
+        strategy: strategies[i],
+        form: options.form,
+        fields: options.fields
       }, self.api));
     }
   });
