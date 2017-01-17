@@ -9,3 +9,11 @@ module.exports.getClass = function (defaultClassValue, classValue) {
   }
   return classValue;
 };
+
+module.exports.getTag = function (defaultTagValue, tagValue, allowedTags) {
+  var tag = defaultTagValue;
+  if (allowedTags.indexOf(tag) === -1) {
+    tag = defaultTagValue;
+  }
+  return tag;
+};
