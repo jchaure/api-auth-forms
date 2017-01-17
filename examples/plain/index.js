@@ -6,6 +6,6 @@ var ApiAuthView = require('../../dist/api-auth-forms');
 
 new ApiAuthView({
   $el: $('#api-auth-form'),
-  baseUrl: 'http://lowcost-env.patiknyyku.eu-west-1.elasticbeanstalk.com',
+  baseUrl: 'http://192.168.99.100:3000',
   customerId: 'patata'
 });

@@ -23,24 +23,25 @@ function ApiAuthForm (options, api) {
   }
   this.api = api;
   this.options = options;
-  this.init(options.strategy);
+  this.init();
 }
 
-ApiAuthForm.prototype.init = function (strategy) {
-  var $form = this.createForm(strategy);
-  var $fields = this.createFields(strategy.fields);
+ApiAuthForm.prototype.init = function () {
+  var $form = this.createForm();
+  var $fields = this.createFields();
   $form.append($fields);
   this.$form = $form;
-  this.generateBindings($form, strategy);
+  this.generateBindings();
   this.options.$el.append($form);
 };
 
-ApiAuthForm.prototype.createForm = function (strategy) {
+ApiAuthForm.prototype.createForm = function () {
   var $container = $('<div>');
   return $container;
 }
 
-ApiAuthForm.prototype.createFields = function (fields) {
+ApiAuthForm.prototype.createFields = function () {
+  var fields = this.options.strategy.fields;
   var $fields = []
   var $button = $('<button>')
     .attr('type', 'submit')
@@ -60,20 +61,29 @@ ApiAuthForm.prototype.createFields = function (fields) {
 };
 
 ApiAuthForm.prototype.serializeForm = function () {
-  var serializedForm = {};
-  this.$form.find('[data-js="submit-sso"]').each(function () {
+  var serializedForm = {
+    strategies: []
+  };
+  var strategy = {
+    provider: this.options.strategy.provider,
+    config: {}
+  };
+  this.$form.find('[data-js="input-sso"]').each(function () {
     var $this = $(this);
-    serializedForm[$this.attr('name')] = $this.val();
+    strategy.config[$this.attr('name')] = $this.val();
   });
+  serializedForm.strategies.push(strategy);
   return serializedForm;
 };
 
-ApiAuthForm.prototype.generateBindings = function ($form, strategy) {
+ApiAuthForm.prototype.generateBindings = function () {
   var self = this;
-  $form.find('[data-js="submit-sso"]').on('click', function (e) {
+  self.$form.find('[data-js="submit-sso"]').on('click', function (e) {
     e.preventDefault();
-    var method = strategy.active ? 'put' : 'post';
-    self.api.config[method](self.serializeForm());
+    var method = self.options.strategy.active ? 'put' : 'post';
+    self.api.config[method](self.serializeForm()).then(function () {
+      self.options.strategy.active = true;
+    });
   });
 }
 
