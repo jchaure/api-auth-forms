@@ -3,6 +3,7 @@
 var $ = require('jquery');
 
 var FormDecorator = require('./form-decorator');
+var SubmitButton = require('./submit-button');
 var Field = require('./field');
 
 function ApiAuthForm (options, api) {
@@ -36,15 +37,12 @@ ApiAuthForm.prototype.createForm = function () {
 ApiAuthForm.prototype.createFields = function () {
   var fieldsData = this.options.strategy.fields;
   var $fields = [];
-  var $button = $('<button>')
-    .attr('type', 'submit')
-    .attr('data-js', 'sso-submit')
-    .text('Submit');
+  var submitButton = new SubmitButton(this.options);
   for (var i = 0, l = fieldsData.length; i < l; i++) {
     var field = new Field(this.options, fieldsData[i]);
     $fields.push(field.getDOM());
   }
-  $fields.push($button);
+  $fields.push(submitButton.getDOM());
   return $fields;
 };
 

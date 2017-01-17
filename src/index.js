@@ -13,7 +13,8 @@ function ApiAuthView (options) {
         $el: options.$el,
         strategy: strategies[i],
         form: options.form,
-        fields: options.fields
+        fields: options.fields,
+        submitButton: options.submitButton
       }, self.api));
     }
   });

@@ -12,8 +12,11 @@ module.exports.getClass = function (defaultClassValue, classValue) {
 
 module.exports.getTag = function (defaultTagValue, tagValue, allowedTags) {
   var tag = defaultTagValue;
-  if (allowedTags.indexOf(tag) === -1) {
-    tag = defaultTagValue;
+  if (!tagValue) {
+    return tag;
+  }
+  if (allowedTags.indexOf(tagValue) > -1) {
+    tag = tagValue;
   }
   return tag;
 };

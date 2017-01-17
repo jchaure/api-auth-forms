@@ -7,7 +7,8 @@ var basePath = path.join(__dirname, 'examples');
 
 module.exports = {
   entry: {
-    'plain': path.join(basePath, 'plain', 'index')
+    plain: path.join(basePath, 'plain', 'index'),
+    bootstrap: path.join(basePath, 'bootstrap', 'index')
   },
   output: {
     path: path.join(__dirname, '/examples'),
