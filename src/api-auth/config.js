@@ -21,9 +21,11 @@ ApiAuthConfig.prototype.post = function (data) {
     type: 'POST',
     method: 'POST',
     url: this.options.baseUrl + '/config',
-    data: data,
+    data: JSON.stringify(data),
     headers: {
-      customer: this.options.customerId,
+      'customer': this.options.customerId,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     }
   });
 }
@@ -33,9 +35,11 @@ ApiAuthConfig.prototype.put = function (data) {
     type: 'PUT',
     method: 'PUT',
     url: this.options.baseUrl + '/config',
-    data: data,
+    data: JSON.stringify(data),
     headers: {
-      customer: this.options.customerId,
+      'customer': this.options.customerId,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     }
   });
 }
