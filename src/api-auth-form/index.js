@@ -49,7 +49,7 @@ ApiAuthForm.prototype.createFormFields = function (form, strategy) {
 
     $(form).append(fieldHolder);
 
-    // @TODO: Create input by type
+    // @TODO: Create input by type | switch (field.type)
     // For now we assume all fields are strings (input type text)
     var textField = document.createElement('input');
     textField.setAttribute('type', 'text');
@@ -65,8 +65,8 @@ ApiAuthForm.prototype.createFormFields = function (form, strategy) {
   });
 
   var submit = document.createElement('button');
-  var text = document.createTextNode('Save');
-  submit.setAttribute('class', 'btn');
+  var text = document.createTextNode('Save ' + strategy.provider + ' configuration');
+  submit.setAttribute('class', 'btn btn-default');
   submit.appendChild(text);
 
   $(form).append(submit);
