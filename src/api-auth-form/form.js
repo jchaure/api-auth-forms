@@ -30,7 +30,9 @@ ApiAuthForm.prototype.init = function () {
 
 ApiAuthForm.prototype.createForm = function () {
   var $container = $('<' + this.formDecorator.getFormTag() + '>');
-  $container.addClass(this.formDecorator.getFormClass());
+  $container
+    .addClass(this.formDecorator.getFormClass())
+    .append(this.formDecorator.getTitle(this.options.strategy.provider));
   return $container;
 }
 
@@ -48,17 +50,12 @@ ApiAuthForm.prototype.createFields = function () {
 
 ApiAuthForm.prototype.serializeForm = function () {
   var serializedForm = {
-    strategies: []
-  };
-  var strategy = {
-    provider: this.options.strategy.provider,
     config: {}
   };
-  this.$form.find('[data-js="sso-input"]').each(function () {
+  this.$form.find('[data-js="sso-field"]').each(function () {
     var $this = $(this);
-    strategy.config[$this.attr('name')] = $this.val();
+    serializedForm.config[$this.attr('name')] = $this.val();
   });
-  serializedForm.strategies.push(strategy);
   return serializedForm;
 };
 
@@ -67,7 +64,7 @@ ApiAuthForm.prototype.generateBindings = function () {
   self.$form.find('[data-js="sso-submit"]').on('click', function (e) {
     e.preventDefault();
     var method = self.options.strategy.active ? 'put' : 'post';
-    self.api.config[method](self.serializeForm()).then(function () {
+    self.api.config[method](self.serializeForm(), self.options.strategy.provider).then(function () {
       self.options.strategy.active = true;
     });
   });

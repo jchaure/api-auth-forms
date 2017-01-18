@@ -10,14 +10,21 @@ new ApiAuthFormView({
   customerId: 'patata',
   form: {
     formClass: 'form',
-    formTag: 'form'
+    formTag: 'form',
+    showTitle: true,
+    titleClass: 'h2',
+    titleTag: 'h2'
   },
   fields: {
     fieldsClass: 'form-control',
     fieldsWrapper: 'div',
-    fieldsWrapperClass: 'form-row',
+    fieldsWrapperClass: 'form-group',
+    showLabels: true,
+    labelsClass: ''
   },
   submitButton: {
-    submitButtonClass: 'btn btn-primary'
+    submitButtonClass: 'btn btn-primary pull-right',
+    submitButtonWrapper: 'div',
+    submitButtonWrapperClass: 'form-group clearfix',
   }
 });

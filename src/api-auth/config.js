@@ -16,11 +16,11 @@ ApiAuthConfig.prototype.get = function () {
   return $.get(this.options.baseUrl + '/config', {customer: this.options.customerId});
 }
 
-ApiAuthConfig.prototype.post = function (data) {
+ApiAuthConfig.prototype.post = function (data, provider) {
   return $.ajax({
     type: 'POST',
     method: 'POST',
-    url: this.options.baseUrl + '/config',
+    url: this.options.baseUrl + '/config/' + provider,
     data: JSON.stringify(data),
     headers: {
       'customer': this.options.customerId,
@@ -30,11 +30,11 @@ ApiAuthConfig.prototype.post = function (data) {
   });
 }
 
-ApiAuthConfig.prototype.put = function (data) {
+ApiAuthConfig.prototype.put = function (data, provider) {
   return $.ajax({
     type: 'PUT',
     method: 'PUT',
-    url: this.options.baseUrl + '/config',
+    url: this.options.baseUrl + '/config/' + provider,
     data: JSON.stringify(data),
     headers: {
       'customer': this.options.customerId,
