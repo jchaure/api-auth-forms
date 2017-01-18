@@ -3,6 +3,7 @@
 var $ = require('jquery');
 
 var FormDecorator = require('./form-decorator');
+var SubmitButton = require('./submit-button');
 var Field = require('./field');
 
 function ApiAuthForm (options, api) {
@@ -29,38 +30,32 @@ ApiAuthForm.prototype.init = function () {
 
 ApiAuthForm.prototype.createForm = function () {
   var $container = $('<' + this.formDecorator.getFormTag() + '>');
-  $container.addClass(this.formDecorator.getFormClass());
+  $container
+    .addClass(this.formDecorator.getFormClass())
+    .append(this.formDecorator.getTitle(this.options.strategy.provider));
   return $container;
 }
 
 ApiAuthForm.prototype.createFields = function () {
   var fieldsData = this.options.strategy.fields;
   var $fields = [];
-  var $button = $('<button>')
-    .attr('type', 'submit')
-    .attr('data-js', 'sso-submit')
-    .text('Submit');
+  var submitButton = new SubmitButton(this.options);
   for (var i = 0, l = fieldsData.length; i < l; i++) {
     var field = new Field(this.options, fieldsData[i]);
     $fields.push(field.getDOM());
   }
-  $fields.push($button);
+  $fields.push(submitButton.getDOM());
   return $fields;
 };
 
 ApiAuthForm.prototype.serializeForm = function () {
   var serializedForm = {
-    strategies: []
-  };
-  var strategy = {
-    provider: this.options.strategy.provider,
     config: {}
   };
-  this.$form.find('[data-js="sso-input"]').each(function () {
+  this.$form.find('[data-js="sso-field"]').each(function () {
     var $this = $(this);
-    strategy.config[$this.attr('name')] = $this.val();
+    serializedForm.config[$this.attr('name')] = $this.val();
   });
-  serializedForm.strategies.push(strategy);
   return serializedForm;
 };
 
@@ -69,7 +64,7 @@ ApiAuthForm.prototype.generateBindings = function () {
   self.$form.find('[data-js="sso-submit"]').on('click', function (e) {
     e.preventDefault();
     var method = self.options.strategy.active ? 'put' : 'post';
-    self.api.config[method](self.serializeForm()).then(function () {
+    self.api.config[method](self.serializeForm(), self.options.strategy.provider).then(function () {
       self.options.strategy.active = true;
     });
   });
